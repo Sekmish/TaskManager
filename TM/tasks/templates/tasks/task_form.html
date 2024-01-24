@@ -1,0 +1,42 @@
+{% extends 'layout/base.html' %}
+{% block title %}{{ task.title }}{% endblock %}
+{% block content %}
+<div class="container">
+    {% if task %}
+        <h1 class="page-title">Редактирование</h1>
+    {% else %}
+        <h1 class="page-title">Создание</h1>
+    {% endif %} <form method="post">
+    {% csrf_token %}
+    <div class="input-container">
+        <label for="title">Наименование:</label>
+        <br>
+        <input type="text" id="title" name="title" value="{{ task.title }}" required class="input-field">
+    </div>
+    <div class="input-container">
+        <label for="description">Подробное описание:</label>
+        <br>
+        <textarea id="description" name="description" required class="input-field">{{ task.description }}</textarea>
+    </div>
+    <button type="submit" class="task-btn">Сохранить</button>
+    {% if task %}
+        {% if completed %} <a href="{% url 'task_delete' task.id %}" class="task-btn">Удалить</a>
+        {% else %}
+            <a href="{% url 'task_delete' task.id %}?next={{ request.path }}" class="task-btn">Удалить</a>
+        {% endif %}
+        {% if not completed %}
+            <button type="submit" name="completed" class="task-btn">Выполнено</button>
+        {% endif %}
+    {% endif %}
+    {% if completed %}
+        <a href="{% url 'completed_task_list' %}" class="task-btn">Назад</a>
+    {% else %}
+        <a href="{% url 'task_list' %}" class="task-btn">Назад</a>
+    {% endif %}
+    {% if task %}
+        {% if completed %} <a href="{% url 'task_return' task.id %}" class="task-btn">Вернуть</a>
+        {% endif %}
+    {% endif %}
+</form>
+</div>
+{% endblock %}

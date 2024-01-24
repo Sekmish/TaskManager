@@ -1,0 +1,14 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Список задач</h1>
+    <a class="task-btn" href="{% url 'task_create' %}">Добавить задачу</a>
+    <table class="task-table">
+        <tr> <th>Наименование</th> </tr>
+        {% for task in tasks %}
+            <tr class="task"> <td><a href="{% url 'task_edit' task.id %}">{{ task.title }}</a></td> </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'completed_task_list' %}" class="task-btn">Показать выполненные задачи</a>
+</div>
+{% endblock %}

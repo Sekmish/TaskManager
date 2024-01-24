@@ -1,0 +1,14 @@
+{% extends 'layout/base.html' %}
+{% block title %}Завершенные задачи{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Выполненные задачи</h1>
+    <a href="{% url 'task_list' %}" class="task-btn">Вернуться к списку задач</a>
+    <table class="task-table">
+        <tr> <th>Наименование</th> </tr>
+        {% for task in tasks %}
+            <tr class="task"> <td><a href="{% url 'task_edit' task.id %}">{{ task.title }}</a></td> </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
