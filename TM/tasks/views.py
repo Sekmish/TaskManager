@@ -5,12 +5,19 @@ def task_list(request):
     tasks = Task.objects.filter(completed=False)
     return render(request, 'tasks/task_list.html', {'tasks': tasks})
 
+
 def task_create(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
-        Task.objects.create(title=title, description=description)
-        return redirect('task_list')
+        deadline = request.POST.get('deadline')
+
+        # Создаем новый объект Task с указанными значениями
+        task = Task(title=title, description=description, deadline=deadline)
+        task.save()  # Сохраняем объект в базу данных
+
+        return redirect('task_list')  # Перенаправляем на страницу со списком задач
+
     return render(request, 'tasks/task_form.html', {'task': None, 'create': True})
 
 def task_delete(request, id):
@@ -28,6 +35,7 @@ def task_edit(request, id):
     if request.method == 'POST':
         task.title = request.POST.get('title')
         task.description = request.POST.get('description')
+        task.deadline = request.POST.get('deadline')
         task.save()
         if 'completed' in request.POST:
             task.completed = True

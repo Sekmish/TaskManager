@@ -18,9 +18,20 @@
         <br>
         <textarea id="description" name="description" required class="input-field">{{ task.description }}</textarea>
     </div>
+ <div class="input-container">
+      <label for="deadline">Дедлайн:</label> <br>
+      <div class="input-group date" id="datetimepicker" data-target-input="nearest">
+        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker" name="deadline" value="{{ task.deadline|date:'Y-m-d H:i:s' }}" required>
+        <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
+          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        </div>
+      </div>
+    </div>
+
     <button type="submit" class="task-btn">Сохранить</button>
     {% if task %}
-        {% if completed %} <a href="{% url 'task_delete' task.id %}" class="task-btn">Удалить</a>
+        {% if completed %} 
+            <a href="{% url 'task_delete' task.id %}" class="task-btn">Удалить</a>
         {% else %}
             <a href="{% url 'task_delete' task.id %}?next={{ request.path }}" class="task-btn">Удалить</a>
         {% endif %}
@@ -39,4 +50,23 @@
     {% endif %}
 </form>
 </div>
+    <script>
+$(function () {
+  $('#datetimepicker').datetimepicker({
+    locale: 'ru',
+    format: 'YYYY-MM-DD HH:mm:ss',
+    icons: {
+      time: 'fa fa-clock',
+      date: 'fa fa-calendar',
+      up: 'fa fa-chevron-up',
+      down: 'fa fa-chevron-down',
+      previous: 'fa fa-chevron-left',
+      next: 'fa fa-chevron-right',
+      today: 'fa fa-calendar-check-o',
+      clear: 'fa fa-trash',
+      close: 'fa fa-times'
+    }
+  });
+});
+</script>
 {% endblock %}
